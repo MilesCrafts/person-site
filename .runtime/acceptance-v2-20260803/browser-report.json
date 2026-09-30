@@ -1,0 +1,199 @@
+{
+  "public": [
+    {
+      "viewport": "desktop",
+      "route": "/",
+      "status": 200,
+      "title": "LEKANG JOURNAL",
+      "bodyTextLength": 438,
+      "viewportWidth": 1280,
+      "scrollWidth": 1280,
+      "hasHorizontalOverflow": false
+    },
+    {
+      "viewport": "desktop",
+      "route": "/journal",
+      "status": 200,
+      "title": "LEKANG JOURNAL",
+      "bodyTextLength": 1288,
+      "viewportWidth": 1280,
+      "scrollWidth": 1280,
+      "hasHorizontalOverflow": false
+    },
+    {
+      "viewport": "desktop",
+      "route": "/article/messi-world-cup",
+      "status": 200,
+      "title": "2022，梅西终于捧起世界杯 — LEKANG JOURNAL",
+      "bodyTextLength": 435,
+      "viewportWidth": 1280,
+      "scrollWidth": 1280,
+      "hasHorizontalOverflow": false
+    },
+    {
+      "viewport": "desktop",
+      "route": "/about",
+      "status": 200,
+      "title": "关于 — LEKANG JOURNAL",
+      "bodyTextLength": 385,
+      "viewportWidth": 1280,
+      "scrollWidth": 1280,
+      "hasHorizontalOverflow": false
+    },
+    {
+      "viewport": "desktop",
+      "route": "/archive",
+      "status": 200,
+      "title": "归档 — LEKANG JOURNAL",
+      "bodyTextLength": 709,
+      "viewportWidth": 1280,
+      "scrollWidth": 1280,
+      "hasHorizontalOverflow": false
+    },
+    {
+      "viewport": "desktop",
+      "route": "/search?q=%E6%A2%85%E8%A5%BF",
+      "status": 200,
+      "title": "搜索 — LEKANG JOURNAL",
+      "bodyTextLength": 1012,
+      "viewportWidth": 1280,
+      "scrollWidth": 1280,
+      "hasHorizontalOverflow": false
+    },
+    {
+      "viewport": "tablet",
+      "route": "/",
+      "status": 200,
+      "title": "LEKANG JOURNAL",
+      "bodyTextLength": 401,
+      "viewportWidth": 768,
+      "scrollWidth": 768,
+      "hasHorizontalOverflow": false
+    },
+    {
+      "viewport": "tablet",
+      "route": "/journal",
+      "status": 200,
+      "title": "LEKANG JOURNAL",
+      "bodyTextLength": 1288,
+      "viewportWidth": 768,
+      "scrollWidth": 768,
+      "hasHorizontalOverflow": false
+    },
+    {
+      "viewport": "tablet",
+      "route": "/article/messi-world-cup",
+      "status": 200,
+      "title": "2022，梅西终于捧起世界杯 — LEKANG JOURNAL",
+      "bodyTextLength": 435,
+      "viewportWidth": 768,
+      "scrollWidth": 768,
+      "hasHorizontalOverflow": false
+    },
+    {
+      "viewport": "tablet",
+      "route": "/about",
+      "status": 200,
+      "title": "关于 — LEKANG JOURNAL",
+      "bodyTextLength": 385,
+      "viewportWidth": 768,
+      "scrollWidth": 768,
+      "hasHorizontalOverflow": false
+    },
+    {
+      "viewport": "tablet",
+      "route": "/archive",
+      "status": 200,
+      "title": "归档 — LEKANG JOURNAL",
+      "bodyTextLength": 709,
+      "viewportWidth": 768,
+      "scrollWidth": 768,
+      "hasHorizontalOverflow": false
+    },
+    {
+      "viewport": "tablet",
+      "route": "/search?q=%E6%A2%85%E8%A5%BF",
+      "status": 200,
+      "title": "搜索 — LEKANG JOURNAL",
+      "bodyTextLength": 1012,
+      "viewportWidth": 768,
+      "scrollWidth": 768,
+      "hasHorizontalOverflow": false
+    },
+    {
+      "viewport": "mobile",
+      "route": "/",
+      "status": 200,
+      "title": "LEKANG JOURNAL",
+      "bodyTextLength": 56,
+      "viewportWidth": 375,
+      "scrollWidth": 375,
+      "hasHorizontalOverflow": false
+    },
+    {
+      "viewport": "mobile",
+      "route": "/journal",
+      "status": 200,
+      "title": "LEKANG JOURNAL",
+      "bodyTextLength": 1252,
+      "viewportWidth": 375,
+      "scrollWidth": 375,
+      "hasHorizontalOverflow": false
+    },
+    {
+      "viewport": "mobile",
+      "route": "/article/messi-world-cup",
+      "status": 200,
+      "title": "2022，梅西终于捧起世界杯 — LEKANG JOURNAL",
+      "bodyTextLength": 414,
+      "viewportWidth": 375,
+      "scrollWidth": 375,
+      "hasHorizontalOverflow": false
+    },
+    {
+      "viewport": "mobile",
+      "route": "/about",
+      "status": 200,
+      "title": "关于 — LEKANG JOURNAL",
+      "bodyTextLength": 364,
+      "viewportWidth": 375,
+      "scrollWidth": 375,
+      "hasHorizontalOverflow": false
+    },
+    {
+      "viewport": "mobile",
+      "route": "/archive",
+      "status": 200,
+      "title": "归档 — LEKANG JOURNAL",
+      "bodyTextLength": 688,
+      "viewportWidth": 375,
+      "scrollWidth": 375,
+      "hasHorizontalOverflow": false
+    },
+    {
+      "viewport": "mobile",
+      "route": "/search?q=%E6%A2%85%E8%A5%BF",
+      "status": 200,
+      "title": "搜索 — LEKANG JOURNAL",
+      "bodyTextLength": 991,
+      "viewportWidth": 375,
+      "scrollWidth": 375,
+      "hasHorizontalOverflow": false
+    }
+  ],
+  "admin": [
+    "anonymous route guard redirected to login",
+    "login and authenticated dashboard passed",
+    "markdown preview passed",
+    "draft creation passed",
+    "edit save and refresh persistence passed",
+    "publish passed",
+    "published article became publicly visible",
+    "unpublish passed",
+    "unpublished article disappeared from public API/page",
+    "archive passed",
+    "logout passed"
+  ],
+  "errors": [],
+  "adminEditUrl": "http://127.0.0.1:5173/admin/articles/16/edit"
+}

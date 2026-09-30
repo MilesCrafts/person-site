@@ -1,0 +1,79 @@
+spring:
+  application:
+    name: lekang-journal-api
+  datasource:
+    url: jdbc:postgresql://127.0.0.1:5432/postgres?currentSchema=lekang_journal
+    username: ${PG_USER:postgres}
+    password: ${PG_PWD:Hkhdl58666}
+    hikari:
+      maximum-pool-size: ${DB_POOL_MAX_SIZE:10}
+      minimum-idle: ${DB_POOL_MIN_IDLE:2}
+      connection-timeout: 5000
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        jdbc:
+          time_zone: UTC
+  flyway:
+    enabled: true
+  mvc:
+    problemdetails:
+      enabled: true
+  servlet:
+    multipart:
+      max-file-size: 8MB
+      max-request-size: 9MB
+  cache:
+    type: caffeine
+    caffeine:
+      spec: maximumSize=500,expireAfterWrite=10m
+
+server:
+  port: 8081
+  address: 127.0.0.1
+  forward-headers-strategy: framework
+  error:
+    include-message: never
+    include-stacktrace: never
+  servlet:
+    session:
+      timeout: ${ADMIN_SESSION_TIMEOUT:30m}
+      cookie:
+        http-only: true
+        same-site: strict
+        path: /api/v1/admin
+
+journal:
+  media:
+    storage-root: ${JOURNAL_MEDIA_ROOT:./data/media}
+  admin:
+    bootstrap-username: ${JOURNAL_ADMIN_USERNAME:}
+    bootstrap-password: ${JOURNAL_ADMIN_PASSWORD:}
+    daily-notes: ${JOURNAL_DAILY_NOTES:先写下来，好文章不必一次完成。,把复杂的事说清楚，也是一种创造。,今天只推进一点，也算认真生活。,先留下真实的想法，再慢慢修整句子。}
+  security:
+    secure-cookies: false
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health
+  endpoint:
+    health:
+      probes:
+        enabled: true
+      show-details: never
+
+springdoc:
+  api-docs:
+    path: /api/v1/openapi
+  swagger-ui:
+    path: /api/v1/swagger-ui
+
+logging:
+  pattern:
+    level: "%5p [requestId:%X{requestId:-}]"
