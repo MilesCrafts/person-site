@@ -1,0 +1,18 @@
+springdoc:
+  api-docs:
+    enabled: false
+  swagger-ui:
+    enabled: false
+
+journal:
+  security:
+    secure-cookies: true
+
+server:
+  servlet:
+    session:
+      cookie:
+        http-only: true
+        secure: true
+        same-site: strict
+        path: /api/v1/admin

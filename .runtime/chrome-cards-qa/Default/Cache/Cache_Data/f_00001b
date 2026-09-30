@@ -1,0 +1,296 @@
+import { createHotContext as __vite__createHotContext } from "/@vite/client";import.meta.hot = __vite__createHotContext("/src/views/ArticleView.vue");import { defineComponent as _defineComponent } from "/node_modules/.vite/deps/vue.js?v=23950f35";
+import { computed, onBeforeUnmount, ref, watch } from "/node_modules/.vite/deps/vue.js?v=23950f35";
+import { useRoute } from "/node_modules/.vite/deps/vue-router.js?v=23950f35";
+import { getArticle, getArticleNavigation } from "/src/api/journal.ts";
+import { getErrorMessage } from "/src/api/client.ts";
+import AsyncState from "/src/components/AsyncState.vue";
+import { useScrollCardReveal } from "/src/composables/useScrollCardReveal.ts";
+import { resolveMediaUrl } from "/src/data/media.ts";
+import { formatCategory, formatPublishedDate, formatReadTime, sanitizeArticleHtml, setPageMeta } from "/src/utils/content.ts?t=1786378892649";
+const _sfc_main = /* @__PURE__ */ _defineComponent({
+  __name: "ArticleView",
+  setup(__props, { expose: __expose }) {
+    __expose();
+    const route = useRoute();
+    const article = ref(null);
+    const navigation = ref(null);
+    const loading = ref(true);
+    const error = ref(null);
+    const cover = computed(() => resolveMediaUrl(article.value?.imageUrl ?? null));
+    const safeBody = computed(() => sanitizeArticleHtml(article.value?.bodyHtml ?? ""));
+    let controller;
+    const { reveal } = useScrollCardReveal();
+    async function loadArticle() {
+      const slug = String(route.params.id ?? "");
+      controller?.abort();
+      const requestController = new AbortController();
+      controller = requestController;
+      loading.value = true;
+      error.value = null;
+      article.value = null;
+      navigation.value = null;
+      try {
+        const [detail, articleNavigation] = await Promise.all([
+          getArticle(slug, requestController.signal),
+          getArticleNavigation(slug, requestController.signal)
+        ]);
+        article.value = detail;
+        navigation.value = articleNavigation;
+        setPageMeta(detail.title, detail.excerpt);
+      } catch (caught) {
+        if (caught instanceof DOMException && caught.name === "AbortError") return;
+        error.value = getErrorMessage(caught);
+      } finally {
+        if (!requestController.signal.aborted) {
+          loading.value = false;
+          if (!error.value) void reveal();
+        }
+      }
+    }
+    watch(() => route.params.id, loadArticle, { immediate: true });
+    onBeforeUnmount(() => controller?.abort());
+    const __returned__ = { route, article, navigation, loading, error, cover, safeBody, get controller() {
+      return controller;
+    }, set controller(v) {
+      controller = v;
+    }, reveal, loadArticle, AsyncState, get formatCategory() {
+      return formatCategory;
+    }, get formatPublishedDate() {
+      return formatPublishedDate;
+    }, get formatReadTime() {
+      return formatReadTime;
+    } };
+    Object.defineProperty(__returned__, "__isScriptSetup", { enumerable: false, value: true });
+    return __returned__;
+  }
+});
+import { createVNode as _createVNode, openBlock as _openBlock, createElementBlock as _createElementBlock, createCommentVNode as _createCommentVNode, toDisplayString as _toDisplayString, createElementVNode as _createElementVNode, createTextVNode as _createTextVNode, resolveComponent as _resolveComponent, withCtx as _withCtx, createBlock as _createBlock } from "/node_modules/.vite/deps/vue.js?v=23950f35";
+const _hoisted_1 = {
+  key: 0,
+  class: "article-view container"
+};
+const _hoisted_2 = {
+  key: 1,
+  class: "article-view container"
+};
+const _hoisted_3 = {
+  class: "article-header",
+  "data-scroll-card": ""
+};
+const _hoisted_4 = { class: "eyebrow" };
+const _hoisted_5 = { class: "lead" };
+const _hoisted_6 = { class: "meta" };
+const _hoisted_7 = {
+  key: 0,
+  class: "article-cover-card",
+  "data-scroll-card": ""
+};
+const _hoisted_8 = ["src", "alt"];
+const _hoisted_9 = {
+  class: "article-facts",
+  "aria-label": "文章信息",
+  "data-scroll-card": ""
+};
+const _hoisted_10 = ["innerHTML"];
+const _hoisted_11 = {
+  class: "article-pagination",
+  "data-scroll-card": ""
+};
+const _hoisted_12 = { key: 1 };
+function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
+  const _component_RouterLink = _resolveComponent("RouterLink");
+  return $setup.loading || $setup.error ? (_openBlock(), _createElementBlock("div", _hoisted_1, [
+    _createVNode($setup["AsyncState"], {
+      loading: $setup.loading,
+      error: $setup.error,
+      "loading-label": "正在打开文章…",
+      onRetry: $setup.loadArticle
+    }, null, 8, ["loading", "error"])
+  ])) : $setup.article ? (_openBlock(), _createElementBlock("article", _hoisted_2, [
+    _createElementVNode("header", _hoisted_3, [
+      _createElementVNode(
+        "p",
+        _hoisted_4,
+        _toDisplayString($setup.formatCategory($setup.article.category)) + " / " + _toDisplayString($setup.article.topic),
+        1
+        /* TEXT */
+      ),
+      _createElementVNode(
+        "h1",
+        null,
+        _toDisplayString($setup.article.title),
+        1
+        /* TEXT */
+      ),
+      _createElementVNode(
+        "p",
+        _hoisted_5,
+        _toDisplayString($setup.article.excerpt),
+        1
+        /* TEXT */
+      ),
+      _createElementVNode("p", _hoisted_6, [
+        _createTextVNode(
+          _toDisplayString($setup.formatPublishedDate($setup.article.publishedAt)) + " ",
+          1
+          /* TEXT */
+        ),
+        _cache[0] || (_cache[0] = _createElementVNode(
+          "span",
+          null,
+          null,
+          -1
+          /* CACHED */
+        )),
+        _createTextVNode(
+          " " + _toDisplayString($setup.formatReadTime($setup.article.readMinutes)),
+          1
+          /* TEXT */
+        )
+      ])
+    ]),
+    $setup.cover ? (_openBlock(), _createElementBlock("figure", _hoisted_7, [
+      _createElementVNode("img", {
+        class: "article-cover",
+        src: $setup.cover,
+        alt: $setup.article.imageAlt || $setup.article.title
+      }, null, 8, _hoisted_8),
+      _createElementVNode("figcaption", null, [
+        _cache[1] || (_cache[1] = _createElementVNode(
+          "span",
+          null,
+          "LEKANG / JOURNAL",
+          -1
+          /* CACHED */
+        )),
+        _createElementVNode(
+          "strong",
+          null,
+          _toDisplayString($setup.formatCategory($setup.article.category)),
+          1
+          /* TEXT */
+        )
+      ])
+    ])) : _createCommentVNode("v-if", true),
+    _createElementVNode("section", _hoisted_9, [
+      _createElementVNode("div", null, [
+        _cache[2] || (_cache[2] = _createElementVNode(
+          "small",
+          null,
+          "发布于",
+          -1
+          /* CACHED */
+        )),
+        _createElementVNode(
+          "strong",
+          null,
+          _toDisplayString($setup.formatPublishedDate($setup.article.publishedAt)),
+          1
+          /* TEXT */
+        )
+      ]),
+      _createElementVNode("div", null, [
+        _cache[3] || (_cache[3] = _createElementVNode(
+          "small",
+          null,
+          "阅读时间",
+          -1
+          /* CACHED */
+        )),
+        _createElementVNode(
+          "strong",
+          null,
+          _toDisplayString($setup.formatReadTime($setup.article.readMinutes)),
+          1
+          /* TEXT */
+        )
+      ]),
+      _createElementVNode("div", null, [
+        _cache[4] || (_cache[4] = _createElementVNode(
+          "small",
+          null,
+          "放进抽屉",
+          -1
+          /* CACHED */
+        )),
+        _createElementVNode(
+          "strong",
+          null,
+          _toDisplayString($setup.formatCategory($setup.article.category)) + " / " + _toDisplayString($setup.article.topic),
+          1
+          /* TEXT */
+        )
+      ])
+    ]),
+    _createElementVNode("div", {
+      class: "article-body",
+      innerHTML: $setup.safeBody
+    }, null, 8, _hoisted_10),
+    _createElementVNode("nav", _hoisted_11, [
+      $setup.navigation?.previous ? (_openBlock(), _createBlock(_component_RouterLink, {
+        key: 0,
+        to: `/article/${$setup.navigation.previous.slug}`
+      }, {
+        default: _withCtx(() => [
+          _cache[5] || (_cache[5] = _createElementVNode(
+            "small",
+            null,
+            "上一篇",
+            -1
+            /* CACHED */
+          )),
+          _createElementVNode(
+            "strong",
+            null,
+            "← " + _toDisplayString($setup.navigation.previous.title),
+            1
+            /* TEXT */
+          )
+        ]),
+        _: 1
+        /* STABLE */
+      }, 8, ["to"])) : (_openBlock(), _createElementBlock("span", _hoisted_12)),
+      $setup.navigation?.next ? (_openBlock(), _createBlock(_component_RouterLink, {
+        key: 2,
+        to: `/article/${$setup.navigation.next.slug}`
+      }, {
+        default: _withCtx(() => [
+          _cache[6] || (_cache[6] = _createElementVNode(
+            "small",
+            null,
+            "下一篇",
+            -1
+            /* CACHED */
+          )),
+          _createElementVNode(
+            "strong",
+            null,
+            _toDisplayString($setup.navigation.next.title) + " →",
+            1
+            /* TEXT */
+          )
+        ]),
+        _: 1
+        /* STABLE */
+      }, 8, ["to"])) : _createCommentVNode("v-if", true)
+    ])
+  ])) : _createCommentVNode("v-if", true);
+}
+_sfc_main.__hmrId = "f69720ee";
+typeof __VUE_HMR_RUNTIME__ !== "undefined" && __VUE_HMR_RUNTIME__.createRecord(_sfc_main.__hmrId, _sfc_main);
+import.meta.hot.on("file-changed", ({ file }) => {
+  __VUE_HMR_RUNTIME__.CHANGED_FILE = file;
+});
+import.meta.hot.accept((mod) => {
+  if (!mod) return;
+  const { default: updated, _rerender_only } = mod;
+  if (_rerender_only) {
+    __VUE_HMR_RUNTIME__.rerender(updated.__hmrId, updated.render);
+  } else {
+    __VUE_HMR_RUNTIME__.reload(updated.__hmrId, updated);
+  }
+});
+import _export_sfc from "/@id/__x00__plugin-vue:export-helper";
+export default /* @__PURE__ */ _export_sfc(_sfc_main, [["render", _sfc_render], ["__file", "D:/lekang/frontend/src/views/ArticleView.vue"]]);
+
+//# sourceMappingURL=data:application/json;base64,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bEUsc0JBQWUsZUFBUSxRQUFRLEtBQUksUUFBRyxpQkFBRyxlQUFRLEtBQUs7QUFBQTtBQUFBO0FBQUE7QUFBQTs7SUFFM0Ysb0JBQWtEO0FBQUEsTUFBN0MsT0FBTTtBQUFBLE1BQWUsV0FBUTtBQUFBO0lBQ2xDLG9CQUdNLE9BSE4sYUFHTTtBQUFBLE1BRmMsbUJBQVksMEJBQTlCLGFBQXNLO0FBQUE7UUFBN0gsSUFBRSxZQUFjLGtCQUFXLFNBQVMsSUFBSTtBQUFBOzBCQUFJLE1BQWtCO0FBQUEsb0NBQWxCO0FBQUEsWUFBa0I7QUFBQTtBQUFBLFlBQVg7QUFBQSxZQUFHO0FBQUE7QUFBQTtBQUFBLFVBQVE7QUFBQSxZQUFrRDtBQUFBO0FBQUEsWUFBMUMsT0FBRSxpQkFBRyxrQkFBVyxTQUFTLEtBQUs7QUFBQTtBQUFBO0FBQUE7QUFBQTs7O3NDQUF5QixvQkFBb0I7QUFBQSxNQUN4SyxtQkFBWSxzQkFBOUIsYUFBMEo7QUFBQTtRQUFySCxJQUFFLFlBQWMsa0JBQVcsS0FBSyxJQUFJO0FBQUE7MEJBQUksTUFBa0I7QUFBQSxvQ0FBbEI7QUFBQSxZQUFrQjtBQUFBO0FBQUEsWUFBWDtBQUFBLFlBQUc7QUFBQTtBQUFBO0FBQUEsVUFBUTtBQUFBLFlBQThDO0FBQUE7QUFBQSw2QkFBbkMsa0JBQVcsS0FBSyxLQUFLLElBQUc7QUFBQSxZQUFFO0FBQUE7QUFBQTtBQUFBIiwibmFtZXMiOltdLCJpZ25vcmVMaXN0IjpbXSwic291cmNlcyI6WyJBcnRpY2xlVmlldy52dWUiXSwic291cmNlc0NvbnRlbnQiOlsiPHNjcmlwdCBzZXR1cCBsYW5nPVwidHNcIj5cbmltcG9ydCB7IGNvbXB1dGVkLCBvbkJlZm9yZVVubW91bnQsIHJlZiwgd2F0Y2ggfSBmcm9tICd2dWUnXG5pbXBvcnQgeyB1c2VSb3V0ZSB9IGZyb20gJ3Z1ZS1yb3V0ZXInXG5pbXBvcnQgeyBnZXRBcnRpY2xlLCBnZXRBcnRpY2xlTmF2aWdhdGlvbiB9IGZyb20gJy4uL2FwaS9qb3VybmFsJ1xuaW1wb3J0IHsgZ2V0RXJyb3JNZXNzYWdlIH0gZnJvbSAnLi4vYXBpL2NsaWVudCdcbmltcG9ydCBBc3luY1N0YXRlIGZyb20gJy4uL2NvbXBvbmVudHMvQXN5bmNTdGF0ZS52dWUnXG5pbXBvcnQgeyB1c2VTY3JvbGxDYXJkUmV2ZWFsIH0gZnJvbSAnLi4vY29tcG9zYWJsZXMvdXNlU2Nyb2xsQ2FyZFJldmVhbCdcbmltcG9ydCB7IHJlc29sdmVNZWRpYVVybCB9IGZyb20gJy4uL2RhdGEvbWVkaWEnXG5pbXBvcnQgdHlwZSB7IEFydGljbGVEZXRhaWwsIEFydGljbGVOYXZpZ2F0aW9uIH0gZnJvbSAnLi4vdHlwZXMvYXBpJ1xuaW1wb3J0IHsgZm9ybWF0Q2F0ZWdvcnksIGZvcm1hdFB1Ymxpc2hlZERhdGUsIGZvcm1hdFJlYWRUaW1lLCBzYW5pdGl6ZUFydGljbGVIdG1sLCBzZXRQYWdlTWV0YSB9IGZyb20gJy4uL3V0aWxzL2NvbnRlbnQnXG5cbmNvbnN0IHJvdXRlID0gdXNlUm91dGUoKVxuY29uc3QgYXJ0aWNsZSA9IHJlZjxBcnRpY2xlRGV0YWlsIHwgbnVsbD4obnVsbClcbmNvbnN0IG5hdmlnYXRpb24gPSByZWY8QXJ0aWNsZU5hdmlnYXRpb24gfCBudWxsPihudWxsKVxuY29uc3QgbG9hZGluZyA9IHJlZih0cnVlKVxuY29uc3QgZXJyb3IgPSByZWY8c3RyaW5nIHwgbnVsbD4obnVsbClcbmNvbnN0IGNvdmVyID0gY29tcHV0ZWQoKCkgPT4gcmVzb2x2ZU1lZGlhVXJsKGFydGljbGUudmFsdWU/LmltYWdlVXJsID8/IG51bGwpKVxuY29uc3Qgc2FmZUJvZHkgPSBjb21wdXRlZCgoKSA9PiBzYW5pdGl6ZUFydGljbGVIdG1sKGFydGljbGUudmFsdWU/LmJvZHlIdG1sID8/ICcnKSlcbmxldCBjb250cm9sbGVyOiBBYm9ydENvbnRyb2xsZXIgfCB1bmRlZmluZWRcbmNvbnN0IHsgcmV2ZWFsIH0gPSB1c2VTY3JvbGxDYXJkUmV2ZWFsKClcblxuYXN5bmMgZnVuY3Rpb24gbG9hZEFydGljbGUoKSB7XG4gIGNvbnN0IHNsdWcgPSBTdHJpbmcocm91dGUucGFyYW1zLmlkID8/ICcnKVxuICBjb250cm9sbGVyPy5hYm9ydCgpXG4gIGNvbnN0IHJlcXVlc3RDb250cm9sbGVyID0gbmV3IEFib3J0Q29udHJvbGxlcigpXG4gIGNvbnRyb2xsZXIgPSByZXF1ZXN0Q29udHJvbGxlclxuICBsb2FkaW5nLnZhbHVlID0gdHJ1ZVxuICBlcnJvci52YWx1ZSA9IG51bGxcbiAgYXJ0aWNsZS52YWx1ZSA9IG51bGxcbiAgbmF2aWdhdGlvbi52YWx1ZSA9IG51bGxcblxuICB0cnkge1xuICAgIGNvbnN0IFtkZXRhaWwsIGFydGljbGVOYXZpZ2F0aW9uXSA9IGF3YWl0IFByb21pc2UuYWxsKFtcbiAgICAgIGdldEFydGljbGUoc2x1ZywgcmVxdWVzdENvbnRyb2xsZXIuc2lnbmFsKSxcbiAgICAgIGdldEFydGljbGVOYXZpZ2F0aW9uKHNsdWcsIHJlcXVlc3RDb250cm9sbGVyLnNpZ25hbClcbiAgICBdKVxuICAgIGFydGljbGUudmFsdWUgPSBkZXRhaWxcbiAgICBuYXZpZ2F0aW9uLnZhbHVlID0gYXJ0aWNsZU5hdmlnYXRpb25cbiAgICBzZXRQYWdlTWV0YShkZXRhaWwudGl0bGUsIGRldGFpbC5leGNlcnB0KVxuICB9IGNhdGNoIChjYXVnaHQpIHtcbiAgICBpZiAoY2F1Z2h0IGluc3RhbmNlb2YgRE9NRXhjZXB0aW9uICYmIGNhdWdodC5uYW1lID09PSAnQWJvcnRFcnJvcicpIHJldHVyblxuICAgIGVycm9yLnZhbHVlID0gZ2V0RXJyb3JNZXNzYWdlKGNhdWdodClcbiAgfSBmaW5hbGx5IHtcbiAgICBpZiAoIXJlcXVlc3RDb250cm9sbGVyLnNpZ25hbC5hYm9ydGVkKSB7XG4gICAgICBsb2FkaW5nLnZhbHVlID0gZmFsc2VcbiAgICAgIGlmICghZXJyb3IudmFsdWUpIHZvaWQgcmV2ZWFsKClcbiAgICB9XG4gIH1cbn1cblxud2F0Y2goKCkgPT4gcm91dGUucGFyYW1zLmlkLCBsb2FkQXJ0aWNsZSwgeyBpbW1lZGlhdGU6IHRydWUgfSlcbm9uQmVmb3JlVW5tb3VudCgoKSA9PiBjb250cm9sbGVyPy5hYm9ydCgpKVxuPC9zY3JpcHQ+XG5cbjx0ZW1wbGF0ZT5cbiAgPGRpdiB2LWlmPVwibG9hZGluZyB8fCBlcnJvclwiIGNsYXNzPVwiYXJ0aWNsZS12aWV3IGNvbnRhaW5lclwiPlxuICAgIDxBc3luY1N0YXRlIDpsb2FkaW5nPVwibG9hZGluZ1wiIDplcnJvcj1cImVycm9yXCIgbG9hZGluZy1sYWJlbD1cIuato+WcqOaJk+W8gOaWh+eroOKAplwiIEByZXRyeT1cImxvYWRBcnRpY2xlXCIgLz5cbiAgPC9kaXY+XG4gIDxhcnRpY2xlIHYtZWxzZS1pZj1cImFydGljbGVcIiBjbGFzcz1cImFydGljbGUtdmlldyBjb250YWluZXJcIj5cbiAgICA8aGVhZGVyIGNsYXNzPVwiYXJ0aWNsZS1oZWFkZXJcIiBkYXRhLXNjcm9sbC1jYXJkPlxuICAgICAgPHAgY2xhc3M9XCJleWVicm93XCI+e3sgZm9ybWF0Q2F0ZWdvcnkoYXJ0aWNsZS5jYXRlZ29yeSkgfX0gLyB7eyBhcnRpY2xlLnRvcGljIH19PC9wPjxoMT57eyBhcnRpY2xlLnRpdGxlIH19PC9oMT48cCBjbGFzcz1cImxlYWRcIj57eyBhcnRpY2xlLmV4Y2VycHQgfX08L3A+PHAgY2xhc3M9XCJtZXRhXCI+e3sgZm9ybWF0UHVibGlzaGVkRGF0ZShhcnRpY2xlLnB1Ymxpc2hlZEF0KSB9fSA8c3Bhbj48L3NwYW4+IHt7IGZvcm1hdFJlYWRUaW1lKGFydGljbGUucmVhZE1pbnV0ZXMpIH19PC9wPlxuICAgIDwvaGVhZGVyPlxuICAgIDxmaWd1cmUgdi1pZj1cImNvdmVyXCIgY2xhc3M9XCJhcnRpY2xlLWNvdmVyLWNhcmRcIiBkYXRhLXNjcm9sbC1jYXJkPlxuICAgICAgPGltZyBjbGFzcz1cImFydGljbGUtY292ZXJcIiA6c3JjPVwiY292ZXJcIiA6YWx0PVwiYXJ0aWNsZS5pbWFnZUFsdCB8fCBhcnRpY2xlLnRpdGxlXCIgLz5cbiAgICAgIDxmaWdjYXB0aW9uPjxzcGFuPkxFS0FORyAvIEpPVVJOQUw8L3NwYW4+PHN0cm9uZz57eyBmb3JtYXRDYXRlZ29yeShhcnRpY2xlLmNhdGVnb3J5KSB9fTwvc3Ryb25nPjwvZmlnY2FwdGlvbj5cbiAgICA8L2ZpZ3VyZT5cbiAgICA8c2VjdGlvbiBjbGFzcz1cImFydGljbGUtZmFjdHNcIiBhcmlhLWxhYmVsPVwi5paH56ug5L+h5oGvXCIgZGF0YS1zY3JvbGwtY2FyZD5cbiAgICAgIDxkaXY+PHNtYWxsPuWPkeW4g+S6jjwvc21hbGw+PHN0cm9uZz57eyBmb3JtYXRQdWJsaXNoZWREYXRlKGFydGljbGUucHVibGlzaGVkQXQpIH19PC9zdHJvbmc+PC9kaXY+XG4gICAgICA8ZGl2PjxzbWFsbD7pmIXor7vml7bpl7Q8L3NtYWxsPjxzdHJvbmc+e3sgZm9ybWF0UmVhZFRpbWUoYXJ0aWNsZS5yZWFkTWludXRlcykgfX08L3N0cm9uZz48L2Rpdj5cbiAgICAgIDxkaXY+PHNtYWxsPuaUvui/m+aKveWxiTwvc21hbGw+PHN0cm9uZz57eyBmb3JtYXRDYXRlZ29yeShhcnRpY2xlLmNhdGVnb3J5KSB9fSAvIHt7IGFydGljbGUudG9waWMgfX08L3N0cm9uZz48L2Rpdj5cbiAgICA8L3NlY3Rpb24+XG4gICAgPGRpdiBjbGFzcz1cImFydGljbGUtYm9keVwiIHYtaHRtbD1cInNhZmVCb2R5XCI+PC9kaXY+XG4gICAgPG5hdiBjbGFzcz1cImFydGljbGUtcGFnaW5hdGlvblwiIGRhdGEtc2Nyb2xsLWNhcmQ+XG4gICAgICA8Um91dGVyTGluayB2LWlmPVwibmF2aWdhdGlvbj8ucHJldmlvdXNcIiA6dG89XCJgL2FydGljbGUvJHtuYXZpZ2F0aW9uLnByZXZpb3VzLnNsdWd9YFwiPjxzbWFsbD7kuIrkuIDnr4c8L3NtYWxsPjxzdHJvbmc+4oaQIHt7IG5hdmlnYXRpb24ucHJldmlvdXMudGl0bGUgfX08L3N0cm9uZz48L1JvdXRlckxpbms+PHNwYW4gdi1lbHNlPjwvc3Bhbj5cbiAgICAgIDxSb3V0ZXJMaW5rIHYtaWY9XCJuYXZpZ2F0aW9uPy5uZXh0XCIgOnRvPVwiYC9hcnRpY2xlLyR7bmF2aWdhdGlvbi5uZXh0LnNsdWd9YFwiPjxzbWFsbD7kuIvkuIDnr4c8L3NtYWxsPjxzdHJvbmc+e3sgbmF2aWdhdGlvbi5uZXh0LnRpdGxlIH19IOKGkjwvc3Ryb25nPjwvUm91dGVyTGluaz5cbiAgICA8L25hdj5cbiAgPC9hcnRpY2xlPlxuPC90ZW1wbGF0ZT5cbiJdLCJmaWxlIjoiRDovbGVrYW5nL2Zyb250ZW5kL3NyYy92aWV3cy9BcnRpY2xlVmlldy52dWUifQ==
